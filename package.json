@@ -1,0 +1,17 @@
+{
+  "name": "find-unused-styles",
+  "version": "1.0.0",
+  "description": "Script to find unused styles in React Native projects",
+  "main": "findUnusedStyles.ts",
+  "scripts": {
+    "start": "ts-node findUnusedStyles.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
