@@ -9,24 +9,36 @@ interface StyleDefinition {
 
 function getAllFiles(dir: string): string[] {
   const files: string[] = [];
-  const items = fs.readdirSync(dir);
 
-  for (const item of items) {
-    const fullPath = path.join(dir, item);
-    const stat = fs.statSync(fullPath);
+  try {
+    const items = fs.readdirSync(dir);
 
-    if (
-      stat.isDirectory() &&
-      !fullPath.includes('node_modules') &&
-      !fullPath.includes('.git')
-    ) {
-      files.push(...getAllFiles(fullPath));
-    } else if (
-      stat.isFile() &&
-      (fullPath.endsWith('.ts') || fullPath.endsWith('.tsx'))
-    ) {
-      files.push(fullPath);
+    for (const item of items) {
+      try {
+        const fullPath = path.join(dir, item);
+        const stat = fs.statSync(fullPath);
+
+        if (
+          stat.isDirectory() &&
+          !fullPath.includes('node_modules') &&
+          !fullPath.includes('.git') &&
+          !fullPath.includes('ios/Pods') &&
+          !fullPath.includes('android/build')
+        ) {
+          files.push(...getAllFiles(fullPath));
+        } else if (
+          stat.isFile() &&
+          (fullPath.endsWith('.ts') || fullPath.endsWith('.tsx'))
+        ) {
+          files.push(fullPath);
+        }
+      } catch (error: any) {
+        // Skip files/directories that can't be accessed
+        continue;
+      }
     }
+  } catch (error: any) {
+    console.error(`Warning: Could not read directory ${dir}: ${error.message}`);
   }
 
   return files;
